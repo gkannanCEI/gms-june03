@@ -1,0 +1,61 @@
+server:
+  port: ${SERVER_PORT:8001}
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:postgresql}
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/gmsdb}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    hikari:
+      pool-name: GmsHikariPool
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: none  # Overridden by profile; Flyway manages schema
+    show-sql: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${B2C_ISSUER_URI:https://tenant.b2clogin.com/tenant.onmicrosoft.com/B2C_1_signin/v2.0/}
+          audiences: ${B2C_API_CLIENT_ID:api-client-id}
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+logging:
+  level:
+    root: WARN
+    com.gms: INFO
+    org.springframework.security: WARN
+
+gms:
+  security:
+    auth-mode: ${GMS_AUTH_MODE:local}
+    role-claim-key: ${GMS_ROLE_CLAIM_KEY:roles}
+    org-id-claim-key: ${GMS_ORG_ID_CLAIM_KEY:extension_organizationId}
+  cors:
+    allowed-origins: ${GMS_CORS_ORIGINS:http://localhost:42001}
+  dynamic-data:
+    allowed-targets:
+      - table: gms_application_data
+        columns:
+          - value_text
+  file-storage:
+    connection-string: ${AZURE_STORAGE_CONNECTION_STRING:DefaultEndpointsProtocol=https;AccountName=devaccount}
+    container-name: gms-attachments
+    sas-expiry-minutes: 5
+    max-file-size-mb: 100

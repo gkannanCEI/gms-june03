@@ -1,0 +1,12 @@
+# PostgreSQL profile (default)
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-test-query: SELECT 1
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate  # Flyway manages schema; JPA validates on startup
+  flyway:
+    locations: classpath:db/migration/postgresql

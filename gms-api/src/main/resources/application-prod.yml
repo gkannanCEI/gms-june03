@@ -1,0 +1,15 @@
+# Production profile — secure defaults
+# All secrets MUST be injected via environment variables or secret store
+# DO NOT commit real credentials to this file
+
+gms:
+  security:
+    auth-mode: b2c  # Always B2C in production
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Validate schema against entities; never auto-create in prod
+  flyway:
+    enabled: true
+    baseline-on-migrate: false  # Fail if schema is not already baselined
