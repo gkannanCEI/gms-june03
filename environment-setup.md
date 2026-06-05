@@ -227,7 +227,7 @@ specific B2C tenant and policy actually emit.
 ```yaml
 # ── Server ──────────────────────────────────────────────────────────────────
 server:
-  port: ${SERVER_PORT:8001}
+  port: ${SERVER_PORT:8081}
   error:
     whitelabel:
       enabled: false
@@ -309,7 +309,7 @@ gms:
 | `DB_PASSWORD` | Yes | — | Oracle schema password |
 | `B2C_ISSUER_URI` | Yes (b2c mode) | — | Azure AD B2C issuer URI (includes policy name) |
 | `B2C_API_CLIENT_ID` | Yes (b2c mode) | — | Backend API app registration client ID |
-| `SERVER_PORT` | No | `8001` | HTTP port |
+| `SERVER_PORT` | No | `8081` | HTTP port |
 | `GMS_AUTH_MODE` | No | `local` | Authentication mode: `b2c` (JWT) or `local` (HTTP Basic against gms_user table). Drives conditional bean selection in SecurityConfig. |
 | `GMS_ROLE_CLAIM_KEY` | No | `roles` | JWT claim key for role array (b2c mode only). Used by SecurityContextProvider. |
 | `GMS_ORG_ID_CLAIM_KEY` | No | `extension_organizationId` | JWT claim key for organization ID (b2c mode only). Used by SecurityContextProvider. |
@@ -434,7 +434,7 @@ Register a separate **Single Page Application (SPA)** in Azure AD B2C for the An
 export const environment = {
   production: false,
   authMode: 'local' as 'b2c' | 'local',    // 'local' for dev, 'b2c' for production
-  apiBaseUrl: 'http://localhost:8001',
+  apiBaseUrl: 'http://localhost:8081',
   b2c: {
     clientId: 'ANGULAR_APP_CLIENT_ID',          // SPA app registration client ID
     authority: 'https://TENANT.b2clogin.com/TENANT.onmicrosoft.com/B2C_1_signin',
@@ -541,7 +541,7 @@ configuration to be active.
 ```json
 {
   "/api": {
-    "target": "http://localhost:8001",
+    "target": "http://localhost:8081",
     "secure": false,
     "changeOrigin": true
   }
@@ -778,7 +778,7 @@ ng serve --proxy-config proxy.conf.json
 ```json
 {
   "/api": {
-    "target": "http://localhost:8001",
+    "target": "http://localhost:8081",
     "secure": false,
     "changeOrigin": true
   }

@@ -46,6 +46,16 @@ import { Page } from '../../../core/models';
             </div>
 
             <div class="form-group">
+              <label class="form-label" for="path">
+              Path <span class="form-label-required">*</span>
+              </label>
+              <input id="path" type="text" class="form-control"
+                     [(ngModel)]="page.path" name="path" required
+                     maxlength="500"
+                     placeholder="e.g. reservation/homeowner"/>
+            </div>
+
+            <div class="form-group">
               <label class="form-label" for="pageDescription">Description</label>
               <textarea id="pageDescription" class="form-control"
                         [(ngModel)]="page.pageDescription" name="pageDescription"
@@ -87,6 +97,7 @@ export class PageFormComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.page.pageName?.trim()) { this.error = 'Page name is required'; return; }
+    if (!this.page.path?.trim()) { this.error = 'Path is required'; return; }
     this.saving = true; this.error = ''; this.success = false;
     const obs = this.isEdit
       ? this.api.updatePage(this.pageId!, this.page)

@@ -17,6 +17,9 @@ public class Page {
     @Column(name = "page_description", length = 1000)
     private String pageDescription;
 
+    @Column(name = "path", length = 500)
+    private String path;
+
     @Column(name = "active", nullable = false)
     private boolean active = true;
 
@@ -45,6 +48,8 @@ public class Page {
     public void setPageDescription(String pageDescription) { this.pageDescription = pageDescription; }
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+    public String getPath() { return path; }
+    public void setPath(String path) { this.path = path; }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
 }

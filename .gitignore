@@ -1,0 +1,9 @@
+/node_modules
+/dist
+.env
+target/
+**/target/
+**/.angular/
+**/node_modules/
+**/dist/
+/logs

@@ -21,15 +21,18 @@ public class PageBuilderService {
     private final RoundPageQuestionRepository roundPageQuestionRepository;
     private final com.gms.repository.PageRuleRepository pageRuleRepository;
     private final ApplicationDataRepository applicationDataRepository;
+    private final AllowlistService allowlistService;
 
     public PageBuilderService(RoundPageRepository roundPageRepository,
                               RoundPageQuestionRepository roundPageQuestionRepository,
                               com.gms.repository.PageRuleRepository pageRuleRepository,
-                              ApplicationDataRepository applicationDataRepository) {
+                              ApplicationDataRepository applicationDataRepository,
+                              AllowlistService allowlistService) {
         this.roundPageRepository = roundPageRepository;
         this.roundPageQuestionRepository = roundPageQuestionRepository;
         this.pageRuleRepository = pageRuleRepository;
         this.applicationDataRepository = applicationDataRepository;
+        this.allowlistService = allowlistService;
     }
 
     public PageRenderDTO buildPage(Long roundId, Long pageId, List<String> userRoles) {
@@ -62,6 +65,7 @@ public class PageBuilderService {
         pageRender.setPageId(roundPage.getPage().getId());
         pageRender.setPageName(resolvedPageName);
         pageRender.setPageDescription(resolvedPageDesc);
+        pageRender.setPath(roundPage.getPage().getPath());
         pageRender.setQuestions(renderedQuestions);
 
         // Page rules
@@ -122,7 +126,9 @@ public class PageBuilderService {
                 completed = isPageComplete(appId, answerableQuestions);
             }
 
-            summaries.add(new PageSummaryDTO(rp.getPage().getId(), name, rp.getDisplayOrder(), completed));
+            String path = rp.getPage() != null ? rp.getPage().getPath() : null;
+
+            summaries.add(new PageSummaryDTO(rp.getPage().getId(), name, path, rp.getDisplayOrder(), completed));
         }
         return summaries;
     }
@@ -166,6 +172,8 @@ public class PageBuilderService {
             String table  = rpq.getQuestion().getTargetTable();
             String column = rpq.getQuestion().getTargetColumn();
             if (table == null || column == null) continue; // misconfigured — skip
+            if (!allowlistService.isPermitted(table, column)) continue; // not in allowlist — skip checking
+
             if (!applicationDataRepository.hasAnswerInDomainTable(table, column, appId)) {
                 return false; // This domain-table question is unanswered
             }

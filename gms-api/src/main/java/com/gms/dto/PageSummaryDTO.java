@@ -5,4 +5,4 @@ package com.gms.dto;
  * The {@code completed} flag is true when the application has at least one saved
  * answer for a required question on this page.
  */
-public record PageSummaryDTO(Long pageId, String pageName, Integer displayOrder, boolean completed) {}
+public record PageSummaryDTO(Long pageId, String pageName, String path, Integer displayOrder, boolean completed) {}

@@ -69,8 +69,8 @@ public class ApplicationDataRepository {
         // table and column are allowlist-validated before this call — safe to interpolate.
         String sql = "SELECT COUNT(*) FROM " + table +
                      " WHERE application_id = ? " +
-                     "AND " + column + " IS NOT NULL " +
-                     "AND " + column + " <> ''";
+                     "AND \"" + column + "\" IS NOT NULL " +
+                     "AND CAST(\"" + column + "\" AS VARCHAR) <> ''";
         Integer count = jdbc.queryForObject(sql, Integer.class, applicationId);
         return count != null && count > 0;
     }

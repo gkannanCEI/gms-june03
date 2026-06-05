@@ -1,5 +1,5 @@
 -- Page rules: cross-field validation at page level
-CREATE TABLE gms_page_rule (
+CREATE TABLE IF NOT EXISTS gms_page_rule (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     round_page_id BIGINT NOT NULL REFERENCES gms_round_page(id) ON DELETE CASCADE,
     logic VARCHAR(5) DEFAULT 'AND',
@@ -7,7 +7,7 @@ CREATE TABLE gms_page_rule (
     created_at TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
-CREATE TABLE gms_page_rule_condition (
+CREATE TABLE IF NOT EXISTS gms_page_rule_condition (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     page_rule_id BIGINT NOT NULL REFERENCES gms_page_rule(id) ON DELETE CASCADE,
     question_id BIGINT NOT NULL REFERENCES gms_question(id),
@@ -16,5 +16,5 @@ CREATE TABLE gms_page_rule_condition (
     value2 VARCHAR(255)
 );
 
-CREATE INDEX idx_page_rule_rp ON gms_page_rule(round_page_id);
-CREATE INDEX idx_page_rule_condition_rule ON gms_page_rule_condition(page_rule_id);
+CREATE INDEX IF NOT EXISTS idx_page_rule_rp ON gms_page_rule(round_page_id);
+CREATE INDEX IF NOT EXISTS idx_page_rule_condition_rule ON gms_page_rule_condition(page_rule_id);

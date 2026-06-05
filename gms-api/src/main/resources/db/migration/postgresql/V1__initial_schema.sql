@@ -1,6 +1,6 @@
 -- Grant Management System - Initial Schema (PostgreSQL)
 
-CREATE TABLE gms_program (
+CREATE TABLE IF NOT EXISTS gms_program (
     id              BIGSERIAL PRIMARY KEY,
     program_name    VARCHAR(255) NOT NULL,
     description     VARCHAR(2000),
@@ -11,7 +11,7 @@ CREATE TABLE gms_program (
     updated_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE gms_program_round (
+CREATE TABLE IF NOT EXISTS gms_program_round (
     id                          BIGSERIAL PRIMARY KEY,
     program_id                  BIGINT NOT NULL REFERENCES gms_program(id),
     round_name                  VARCHAR(255) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE gms_program_round (
     updated_at                  TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE gms_page (
+CREATE TABLE IF NOT EXISTS gms_page (
     id               BIGSERIAL PRIMARY KEY,
     page_name        VARCHAR(200) NOT NULL,
     page_description VARCHAR(1000),
@@ -33,7 +33,7 @@ CREATE TABLE gms_page (
     updated_at       TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE gms_round_page (
+CREATE TABLE IF NOT EXISTS gms_round_page (
     id                        BIGSERIAL PRIMARY KEY,
     program_round_id          BIGINT NOT NULL REFERENCES gms_program_round(id),
     page_id                   BIGINT NOT NULL REFERENCES gms_page(id),
@@ -42,7 +42,7 @@ CREATE TABLE gms_round_page (
     page_description_override VARCHAR(1000)
 );
 
-CREATE TABLE gms_question (
+CREATE TABLE IF NOT EXISTS gms_question (
     id                  BIGSERIAL PRIMARY KEY,
     question_type       VARCHAR(50) NOT NULL,
     label               VARCHAR(255) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE gms_question (
     updated_at          TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE gms_question_option (
+CREATE TABLE IF NOT EXISTS gms_question_option (
     id                   BIGSERIAL PRIMARY KEY,
     question_id          BIGINT NOT NULL REFERENCES gms_question(id),
     option_label         VARCHAR(255) NOT NULL,

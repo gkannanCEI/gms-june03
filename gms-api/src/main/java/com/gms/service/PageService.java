@@ -39,6 +39,9 @@ public class PageService {
         if (page.getPageName().length() > 200) {
             throw new ValidationException("pageName must be at most 200 characters");
         }
+        if (page.getPath() != null && page.getPath().length() > 500) {
+            throw new ValidationException("path must be at most 500 characters");
+        }
         page.setActive(true);
         return pageRepository.save(page);
     }
@@ -48,6 +51,7 @@ public class PageService {
             .orElseThrow(() -> new ValidationException("Page not found: " + id));
         if (updates.getPageName() != null) existing.setPageName(updates.getPageName());
         if (updates.getPageDescription() != null) existing.setPageDescription(updates.getPageDescription());
+        if (updates.getPath() != null) existing.setPath(updates.getPath());
         return pageRepository.save(existing);
     }
 

@@ -23,6 +23,7 @@ export interface Page {
   id: number;
   pageName: string;
   pageDescription?: string;
+  path?: string;
   active: boolean;
 }
 
@@ -58,6 +59,7 @@ export interface PageRenderDTO {
   pageId: number;
   pageName: string;
   pageDescription?: string;
+  path?: string;
   questions: QuestionRenderDTO[];
   pageRules?: PageRuleDTO[];
 }
@@ -126,6 +128,7 @@ export interface ChildQuestionRenderDTO {
 export interface PageSummaryDTO {
   pageId: number;
   pageName: string;
+  path?: string;
   displayOrder: number;
   completed: boolean;
 }

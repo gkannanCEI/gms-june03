@@ -1,6 +1,6 @@
 -- Local authentication user table (PostgreSQL)
 
-CREATE TABLE gms_user (
+CREATE TABLE IF NOT EXISTS gms_user (
     id              BIGSERIAL PRIMARY KEY,
     username        VARCHAR(100) NOT NULL UNIQUE,
     password_hash   VARCHAR(255) NOT NULL,

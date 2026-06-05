@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -85,7 +86,7 @@ public class SecurityConfig {
                     .hasAnyAuthority("ROLE_APPLICANT", "ROLE_ADMIN")
                 .anyRequest().authenticated()
             )
-            .httpBasic(basic -> {})
+            .httpBasic(basic -> basic.authenticationEntryPoint(suppressWwwAuthenticateEntryPoint()))
             .authenticationProvider(localAuthProvider(userDetailsService));
         return http.build();
     }
@@ -102,6 +103,31 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
+    }
+
+    /**
+     * Custom entry point that returns a plain 401 JSON response without a
+     * WWW-Authenticate: Basic header.  Without this, browsers intercept the 401
+     * and display their own login dialog instead of letting Angular handle it.
+     */
+    @Bean
+    @ConditionalOnProperty(name = "gms.security.auth-mode", havingValue = "local")
+    public BasicAuthenticationEntryPoint suppressWwwAuthenticateEntryPoint() {
+        BasicAuthenticationEntryPoint ep = new BasicAuthenticationEntryPoint() {
+            @Override
+            public void commence(jakarta.servlet.http.HttpServletRequest request,
+                                 jakarta.servlet.http.HttpServletResponse response,
+                                 org.springframework.security.core.AuthenticationException authException)
+                    throws java.io.IOException {
+                // Return a clean 401 without WWW-Authenticate so the browser
+                // passes the response back to Angular rather than showing its own dialog.
+                response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\":\"Unauthorized\"}");
+            }
+        };
+        ep.setRealmName("GMS");
+        return ep;
     }
 
     @Bean

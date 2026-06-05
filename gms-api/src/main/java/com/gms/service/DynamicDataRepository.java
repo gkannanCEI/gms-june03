@@ -57,11 +57,11 @@ public class DynamicDataRepository {
         Timestamp now = Timestamp.from(Instant.now());
 
         if (existsDomainTable(table, applicationId)) {
-            String sql = "UPDATE " + table + " SET " + column + " = ?, updated_at = ? " +
+            String sql = "UPDATE " + table + " SET \"" + column + "\" = ?, updated_at = ? " +
                          "WHERE application_id = ?";
             jdbcTemplate.update(sql, value, now, applicationId);
         } else {
-            String sql = "INSERT INTO " + table + " (application_id, " + column + ", created_at, updated_at) " +
+            String sql = "INSERT INTO " + table + " (application_id, \"" + column + "\", created_at, updated_at) " +
                          "VALUES (?, ?, ?, ?)";
             jdbcTemplate.update(sql, applicationId, value, now, now);
         }
@@ -83,7 +83,7 @@ public class DynamicDataRepository {
      */
     public String readDomainTable(String table, String column, Long applicationId) {
         validateTarget(table, column);
-        String sql = "SELECT " + column + " FROM " + table + " WHERE application_id = ?";
+        String sql = "SELECT \"" + column + "\" FROM " + table + " WHERE application_id = ?";
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, applicationId);
         if (rows.isEmpty()) return null;
         Object val = rows.get(0).get(column);

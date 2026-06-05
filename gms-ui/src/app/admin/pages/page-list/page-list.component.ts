@@ -41,6 +41,7 @@ import { ApiService } from '../../../core/services/api.service';
         <thead>
           <tr>
             <th>Page Name</th>
+            <th>Path</th>
             <th>Description</th>
             <th>Status</th>
             <th></th>
@@ -49,6 +50,7 @@ import { ApiService } from '../../../core/services/api.service';
         <tbody>
           <tr *ngFor="let p of pages">
             <td style="font-weight:500;">{{ p.pageName }}</td>
+            <td class="td-muted">{{ p.path || '&#8212;' }}</td>
             <td class="td-muted" style="max-width:400px;">
               <span style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                 {{ p.pageDescription || '&#8212;' }}

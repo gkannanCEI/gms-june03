@@ -8,6 +8,7 @@ public class PageRenderDTO {
     private Long pageId;
     private String pageName;
     private String pageDescription;
+    private String path;
     private List<QuestionRenderDTO> questions;
     private List<PageRuleDTO> pageRules;
 
@@ -21,6 +22,8 @@ public class PageRenderDTO {
     public void setPageName(String pageName) { this.pageName = pageName; }
     public String getPageDescription() { return pageDescription; }
     public void setPageDescription(String pageDescription) { this.pageDescription = pageDescription; }
+    public String getPath() { return path; }
+    public void setPath(String path) { this.path = path; }
     public List<QuestionRenderDTO> getQuestions() { return questions; }
     public void setQuestions(List<QuestionRenderDTO> questions) { this.questions = questions; }
     public List<PageRuleDTO> getPageRules() { return pageRules; }

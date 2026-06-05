@@ -1,6 +1,6 @@
 -- Round-Page-Question configuration (PostgreSQL)
 
-CREATE TABLE gms_round_page_question (
+CREATE TABLE IF NOT EXISTS gms_round_page_question (
     id                      BIGSERIAL PRIMARY KEY,
     round_page_id           BIGINT NOT NULL REFERENCES gms_round_page(id) ON DELETE CASCADE,
     question_id             BIGINT NOT NULL REFERENCES gms_question(id),
@@ -18,7 +18,7 @@ CREATE TABLE gms_round_page_question (
     UNIQUE (round_page_id, question_id)
 );
 
-CREATE TABLE gms_round_page_question_role (
+CREATE TABLE IF NOT EXISTS gms_round_page_question_role (
     id                      BIGSERIAL PRIMARY KEY,
     round_page_question_id  BIGINT NOT NULL REFERENCES gms_round_page_question(id) ON DELETE CASCADE,
     role_name               VARCHAR(100) NOT NULL
@@ -26,7 +26,7 @@ CREATE TABLE gms_round_page_question_role (
 
 -- Organization
 
-CREATE TABLE gms_organization (
+CREATE TABLE IF NOT EXISTS gms_organization (
     id                BIGSERIAL PRIMARY KEY,
     name              VARCHAR(255) NOT NULL UNIQUE,
     organization_type VARCHAR(20) NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE gms_organization (
 
 -- Application lifecycle
 
-CREATE TABLE gms_application (
+CREATE TABLE IF NOT EXISTS gms_application (
     id                    BIGSERIAL PRIMARY KEY,
     program_round_id      BIGINT NOT NULL REFERENCES gms_program_round(id),
     organization_id       BIGINT NOT NULL REFERENCES gms_organization(id),
@@ -52,7 +52,7 @@ CREATE TABLE gms_application (
 
 -- Application data (reference single-table pattern)
 
-CREATE TABLE gms_application_data (
+CREATE TABLE IF NOT EXISTS gms_application_data (
     id              BIGSERIAL PRIMARY KEY,
     application_id  BIGINT NOT NULL REFERENCES gms_application(id),
     question_id     BIGINT NOT NULL REFERENCES gms_question(id),
@@ -64,7 +64,7 @@ CREATE TABLE gms_application_data (
 
 -- File attachments
 
-CREATE TABLE gms_file_attachment (
+CREATE TABLE IF NOT EXISTS gms_file_attachment (
     id                VARCHAR(36) PRIMARY KEY,
     application_id    BIGINT NOT NULL REFERENCES gms_application(id),
     question_id       BIGINT NOT NULL REFERENCES gms_question(id),
@@ -79,7 +79,7 @@ CREATE TABLE gms_file_attachment (
 
 -- Status history
 
-CREATE TABLE gms_status_history (
+CREATE TABLE IF NOT EXISTS gms_status_history (
     id          BIGSERIAL PRIMARY KEY,
     entity_type VARCHAR(50) NOT NULL,
     entity_id   BIGINT NOT NULL,

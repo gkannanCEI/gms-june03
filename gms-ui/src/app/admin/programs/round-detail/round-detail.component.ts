@@ -106,6 +106,7 @@ import { ApiService } from '../../../core/services/api.service';
               <tr>
                 <th>Order</th>
                 <th>Page Name</th>
+                <th>Path</th>
                 <th></th>
               </tr>
             </thead>
@@ -113,6 +114,7 @@ import { ApiService } from '../../../core/services/api.service';
               <tr *ngFor="let rp of roundPages">
                 <td class="td-muted" style="width:60px;font-weight:600;">{{ rp.displayOrder }}</td>
                 <td style="font-weight:500;">{{ rp.page?.pageName || rp.pageName || ('Page ' + (rp.page?.id || rp.pageId)) }}</td>
+                <td class="td-muted">{{ rp.page?.path || '&#8212;' }}</td>
                 <td>
                   <div class="table-actions">
                     <a [routerLink]="['/admin/programs', programId, 'rounds', roundId, 'pages', rp.page?.id || rp.pageId]"
