@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8001}
+  port: ${SERVER_PORT:8081}
   error:
     whitelabel:
       enabled: false
@@ -9,9 +9,9 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:postgresql}
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/gmsdb}
+    url: ${DB_URL:jdbc:postgresql://localhost:5435/grants-dpp}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:password}
+    password: ${DB_PASSWORD:admin}
     hikari:
       pool-name: GmsHikariPool
       minimum-idle: 5
@@ -35,6 +35,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+    validate-on-migrate: false
 
 logging:
   level:
@@ -54,6 +55,10 @@ gms:
       - table: gms_application_data
         columns:
           - value_text
+      - table: site
+        columns:
+          - openDate
+          - value
   file-storage:
     connection-string: ${AZURE_STORAGE_CONNECTION_STRING:DefaultEndpointsProtocol=https;AccountName=devaccount}
     container-name: gms-attachments
